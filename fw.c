@@ -27,14 +27,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 int main(int argc, const char *argv[]){
    FILE *fp;
    int num;
    if(argc == 1){  //check for -n argument
       fp = stdin;
    }
-   else if(argv[1] == "-n"){
-      num = ;
+   else if(!strcmp(argv[1],"-n")){
+      if(atoi(argv[2])){
+         num = atoi(argv[2]);
+      }
+      else{ 
+         return 1;
+         perror("usage: fw [-n num] [ file1 [file 2 ...]]\n");
+      }
    }
 
    return 0;
