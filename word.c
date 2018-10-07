@@ -52,8 +52,27 @@ void append_word(char *str, word **hash_table){
  * else if it hits NULL
  * */
 word *look_up_word(char *str, word **hash_table){
-   word *ret = NULL;
-   return ret;
+   	unsigned int index = hash_function(strr);
+   	word *bucket = hash_table[index];
+   	if (bucket == NULL)
+   	{
+		return NULL;
+   	}   
+   	else if (!(strcmp(bucket -> wd, str)))
+	{
+		return bucket ;
+	}
+    
+   	while (bucket = bucket-> next)
+   	{
+		if(!(strcmp(bucket -> wd, str)))
+		{
+			return bucket;
+		}
+	}
+	return NULL;
+   	//word *ret = NULL;
+   	//return ret;
 }
 
 /* traverse from left to right of the hash table, at each location, 
@@ -80,17 +99,18 @@ word *sort_word_array(word **hashtable){
  * return 0 if a and b are equal 
 */
 int wordcmp(word *a, word *b){
-	//if the freq of a and and b are equal
-	//we want to compare their words 
-	//if a come before b strcmp will gives -1
-   if( a->freq == b->freq)
-		return strcmp(a->wd, b->wd); 
-   else
-	// if the freq of a and b are not equal 
-	// return negative number if a is greater than b
-	// return positive number if a is less than b 
-		return (a->freq < b->freq);
-
+	
+    if( a->freq == b->freq)
+    {
+        return strcmp(a->wd, b->wd);
+    }
+    else if( a->freq > b->freq)
+    {
+        return -1;
+    }else
+    {
+        return 1;
+    }
 }
 
 /* call built in sort function and print
