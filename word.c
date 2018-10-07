@@ -63,9 +63,22 @@ word *sort_word_array(word *hashtable){
    return ret;
 }
 
+/* return negative number if a comes before b
+ * return positvie if a comes after b
+ * return 0 if a and b are equal 
+*/
 int wordcmp(word *a, word *b){
-   int ret = 0;
-   return ret;
+	//if the freq of a and and b are equal
+	//we want to compare their words 
+	//if a come before b strcmp will gives -1
+   if( a->freq == b->freq)
+		return strcmp(a->wd, b->wd); 
+   else
+	// if the freq of a and b are not equal 
+	// return negative number if a is greater than b
+	// return positive number if a is less than b 
+		return (a->freq < b->freq);
+
 }
 
 /* call built in sort function and print
@@ -86,6 +99,10 @@ int read_file_check(const char* fileName){
    }   
 }
 
+/* return a word from stdin until it hits EOF
+ * 		If numbers, special char are read, it will 
+ * 		return a character pointer that point to 0 value
+ */
 char *read_word(FILE *file){
 	char *buffer = NULL; 
 	int array_size = 128; 
