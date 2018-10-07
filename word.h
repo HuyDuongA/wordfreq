@@ -14,6 +14,7 @@ word *new_word(char *);             //Huy
 void evaluate_word(char *, word **);//Huy
 void append_word(char *, word **);   //Visal
 word *look_up_word(char *, word **); //Visal
+int count(word **);                 //Huy
 word *hash_to_list(word **);         //Huy
 word *sort_word_array(word **);      //Visal
 int wordcmp(word* , word*);         //Visal
