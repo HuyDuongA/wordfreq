@@ -2,7 +2,7 @@
 #include "word.h"
 #include <stdlib.h>
 #include <ctype.h>
-
+#include <string.h>
 unsigned int hash_function(char *s){
    unsigned int hashval;
    for(hashval = 0; *s != '\0'; s++)
@@ -56,20 +56,20 @@ void append_word(char *str, word **hash_table){
  * else if it hits NULL
  * */
 word *look_up_word(char *str, word **hash_table){
-   	unsigned int index = hash_function(strr);
+   	unsigned int index = hash_function(str);
    	word *bucket = hash_table[index];
    	if (bucket == NULL)
    	{
 		return NULL;
    	}   
-   	else if (!(strcmp(bucket -> wd, str)))
+   	else if (!(strcmp((bucket -> wd), str)))
 	{
 		return bucket ;
 	}
     
-   	while (bucket = bucket-> next)
+   	while ((bucket = (bucket-> next)))
    	{
-		if(!(strcmp(bucket -> wd, str)))
+		if (!(strcmp((bucket -> wd), str)))	
 		{
 			return bucket;
 		}
