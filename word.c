@@ -82,7 +82,16 @@ word *look_up_word(char *str, word **hash_table){
 /* count how many words stored inside hash_table
  * */
 int count(word **hash_table){
-   int word_num = 5;
+   int word_num = 0;
+   for(int i = 0; i < HASHSIZE; ++i){
+      if(hash_table[i]){
+         next_node = hashtable[i];
+         while(next_node){
+            word_num++;
+            next_node = next_node->next;
+         }
+      }
+   }
    return word_num;
 }
 
@@ -110,14 +119,6 @@ word *hash_to_list(word **hash_table){
    return list;
 }
 
-/* call a qsort to sort the array and wordcmp to sort the array and return
- * the sorted array
- * */
-word *sort_word_array(word **hashtable){
-   word *ret = NULL;
-   return ret;
-}
-
 /* return negative number if a comes before b
  * return positvie if a comes after b
  * return 0 if a and b are equal 
@@ -139,7 +140,8 @@ int wordcmp(word *a, word *b){
 
 /* call built in sort function and print
  * */
-void print(int num, word *sorted_list){
+void sort_print(word *list, word **hash_table){
+   qsort(list, count(hash_table), sizeof(word), wordcmp);
 }
 
 int read_file_check(const char* fileName){
