@@ -1,4 +1,4 @@
-TARGET   = a.out
+TARGET   = wf
 CC       = clang
 CCFLAGS  = -std=c99 -g -pedantic -Wall 
 LDFLAGS  = -lm

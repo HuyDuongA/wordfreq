@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "word.h"
 
 int main(int argc, const char *argv[]){
    FILE *fp;
@@ -38,12 +39,26 @@ int main(int argc, const char *argv[]){
    else if(!strcmp(argv[1],"-n")){
       if(atoi(argv[2])){
          num = atoi(argv[2]);
+         for(int i = 0; i < argc-3; i++){
+            if(read_file_check(argv[i+3])){
+               //evaluate_word(fp);
+            }
+         }
       }
       else{ 
-         return 1;
          perror("usage: fw [-n num] [ file1 [file 2 ...]]\n");
+         return 1;
       }
    }
-
+   else {
+      num = 10; 
+      for(int i = 0; i < argc-1; i++){
+         if(read_file_check(argv[i+1])){
+            //evaluate_word(fp);
+         } 
+      }   
+   }
    return 0;
 }
+
+
