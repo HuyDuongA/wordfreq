@@ -8,6 +8,7 @@ typedef struct node{
    struct node *next;
 }word;
 
+//char *read_long_line(FILE *file);
 unsigned int hash_function(char *); //done
 void evaluate_word(char *, word *); //Huy
 word *new_word(char *);             //Huy
@@ -17,6 +18,6 @@ word *hash_to_list(word *);         //Huy
 word *sort_word_array(word *);      //Visal
 int wordcmp(word* , word*);         //Visal
 void print(int ,word *);            //Huy
-char* readWord(FILE *);             //done
+char* read_word(FILE *);             //done
 int read_file_check(const char*);   //done
 #endif

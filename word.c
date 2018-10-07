@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "word.h"
+#include <stdlib.h>
+#include <ctype.h>
 
 unsigned int hash_function(char *s){
    unsigned int hashval;
@@ -82,5 +84,44 @@ int read_file_check(const char* fileName){
       fclose(fp); 
       return 1;
    }   
+}
+
+char *read_word(FILE *file){
+	char *buffer = NULL; 
+	int array_size = 128; 
+	buffer = (char*)calloc(sizeof(char), array_size);
+  	if(buffer == NULL) 
+  	{
+     	perror("malloc: failed");
+		return NULL;
+
+    }
+	int count = 0; 
+	int c = 0; 
+	
+	while(((c = getc(file)) != EOF) && (isalpha(c))){
+		
+		if(count < array_size){
+			buffer[tolower(count)] = c;
+			++count;
+		}else{
+			array_size = array_size *2;
+			buffer = realloc(buffer, array_size);
+			if(buffer == NULL)
+			{
+				perror("calloc: failed");
+				return NULL;
+			} 
+			buffer[tolower(count)] = c; 
+			++count; 
+		}
+	  
+	}
+	if(c == EOF)
+	{
+		buffer = NULL; 
+	}
+	return buffer;
+
 }
 
