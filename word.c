@@ -12,13 +12,25 @@ unsigned int hash_function(char *s){
 
 
 /*call look_up_word to see if the word is in hash table
-      if so, call new_word and store return address
-      into hashtable.
+      if not, call new_word and store return address into hashtable.
             if the bucket[index] is empty at new struct word 
             else add it to the bottom chain (by calling append_word())
       else if it's already in the hashtable, increment frequency of the word
  * */
-void evaluate_word (char *str, word *hash_table){
+void evaluate_word (char *str, word **hash_table){
+   int hash_val = hash_function(str);
+   word *address = look_up_word(str, hash_table);
+   if(!address){
+      if(hash_table[hash_val] == NULL){
+         hash_table[hash_val] = new_word(str);
+      }
+      else{
+         append_word(str, hash_table);
+      }
+   }
+   else{
+      address->freq++;
+   }
 }
 
 /* allocate memory (check error for malloc) for struct word, store str 
@@ -32,15 +44,15 @@ word *new_word(char *str){
 /* call hash function to get the index of bucket, and traverse through
  * the chain until node points to NULL, add new word, increase frequency
  * */
-void append_word(char *str, word *hash_table){
+void append_word(char *str, word **hash_table){
 }
 
 /* call hash_function to get the index of str, traverse through the chain
  * if the word is found, return address of the word
  * else if it hits NULL
  * */
-word *look_up_word(char *str, word *hash_table){
-    word *ret = NULL;
+word *look_up_word(char *str, word **hash_table){
+   word *ret = NULL;
    return ret;
 }
 
@@ -50,7 +62,7 @@ word *look_up_word(char *str, word *hash_table){
  * traverse through hash table (left to right, then top to bottom), 
  * and put each word into new array list.
  * */
-word *hash_to_list(word *hash_table){
+word *hash_to_list(word **hash_table){
    word *ret = NULL;
    return ret;
 }
@@ -58,7 +70,7 @@ word *hash_to_list(word *hash_table){
 /* call a qsort to sort the array and wordcmp to sort the array and return
  * the sorted array
  * */
-word *sort_word_array(word *hashtable){
+word *sort_word_array(word **hashtable){
    word *ret = NULL;
    return ret;
 }
