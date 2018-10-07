@@ -39,7 +39,7 @@ void append_word(char *str, word *hash_table){
  * if the word is found, return address of the word
  * else if it hits NULL
  * */
-word * look_up_word(char *str, word *hash_table){
+word *look_up_word(char *str, word *hash_table){
     word *ret = NULL;
    return ret;
 }
