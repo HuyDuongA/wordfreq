@@ -37,8 +37,12 @@ void evaluate_word (char *str, word **hash_table){
  * into wd, then return word.
  * */
 word *new_word(char *str){
-   word *ret = NULL;
-   return ret;
+   int num_word = 1;
+   word* w_new = calloc(num_word, sizeof(word));
+   w_new->wd = str;
+   w_new->freq = 0;
+   w_new->next = NULL;
+   return w_new;
 }
 
 /* call hash function to get the index of bucket, and traverse through
@@ -75,15 +79,35 @@ word *look_up_word(char *str, word **hash_table){
    	//return ret;
 }
 
+/* count how many words stored inside hash_table
+ * */
+int count(word **hash_table){
+   int word_num = 5;
+   return word_num;
+}
+
 /* traverse from left to right of the hash table, at each location, 
  * traverse from top to bottom, increase word count 
  * create array with the size of word count
  * traverse through hash table (left to right, then top to bottom), 
- * and put each word into new array list.
+ * and if hash_table[index] is !NULL put each word at the index into 
+ * new array list.
  * */
 word *hash_to_list(word **hash_table){
-   word *ret = NULL;
-   return ret;
+   word *list = calloc(count(hash_table), sizeof(word));
+   struct node* next_node = NULL;
+   int list_index = 0;
+   for(int i = 0; i < HASHSIZE; ++i){
+      if(hash_table[i]){
+         next_node = hash_table[i]; 
+         while(next_node){
+            list[list_index] = *next_node;
+            next_node = next_node->next;
+            list_index++;
+         }   
+      }
+   }
+   return list;
 }
 
 /* call a qsort to sort the array and wordcmp to sort the array and return
