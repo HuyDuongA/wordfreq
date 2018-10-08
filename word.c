@@ -35,7 +35,7 @@ word *new_word(char *str){
    int num_word = 1;
    word* w_new = calloc(num_word, sizeof(word));
    w_new->wd = str;
-   w_new->freq = 0;
+   w_new->freq = 1;
    w_new->next = NULL;
    return w_new;
 }
@@ -99,7 +99,17 @@ word *look_up_word(char *str, word **hash_table){
 /* count how many words stored inside hash_table
  * */
 int count(word **hash_table){
-   int word_num = 5;
+   int word_num = 0;
+   struct node *next_node = NULL;
+   for(int i = 0; i < HASHSIZE; ++i){
+      if(hash_table[i]){
+         next_node = hash_table[i];
+         while(next_node){
+            word_num++;
+            next_node = next_node->next;
+         }
+      }
+   }
    return word_num;
 }
 
@@ -112,7 +122,7 @@ int count(word **hash_table){
  * */
 word *hash_to_list(word **hash_table){
    word *list = calloc(count(hash_table), sizeof(word));
-   struct node* next_node = NULL;
+   struct node *next_node = NULL;
    int list_index = 0;
    for(int i = 0; i < HASHSIZE; ++i){
       if(hash_table[i]){
@@ -127,21 +137,12 @@ word *hash_to_list(word **hash_table){
    return list;
 }
 
-/* call a qsort to sort the array and wordcmp to sort the array and return
- * the sorted array
- * */
-word *sort_word_array(word **hashtable){
-   word *ret = NULL;
-   return ret;
-}
-
 /* return negative number if a comes before b
  * return positvie if a comes after b
  * return 0 if a and b are equal 
 */
 int wordcmp(word *a, word *b){
-	
-    if( a->freq == b->freq)
+    if(a->freq == b->freq)
     {
         return strcmp(a->wd, b->wd);
     }
@@ -156,7 +157,20 @@ int wordcmp(word *a, word *b){
 
 /* call built in sort function and print
  * */
-void print(int num, word *sorted_list){
+void sort_print(int user_num, word *list, word **hash_table){
+   int cnt = count(hash_table);
+   qsort(list, cnt, sizeof(word), 
+      (int (*) (const void*, const void *)) wordcmp);
+   printf("The top %d words (out of %d) are:\n", user_num, cnt);
+   for(int i = 0; i < user_num; ++i){
+      printf("\t%d %s\n", list[i].freq, list->wd);
+   }
+}
+
+/* traverse through list and free each word and its next pointer
+ * lastly, free list and hash_table pointers
+ * */
+void clean_up(word *list, word **hash_table){
 }
 
 int read_file_check(const char* fileName){
