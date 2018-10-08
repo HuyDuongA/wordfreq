@@ -44,13 +44,18 @@ word *new_word(char *str){
 void append_word(char *str, word **hash_table){
 	int index = hash_function(str); 
 	word *bucket = hash_table[index];
-	while(bucket != NULL){
-		bucket = bucket-> next;  
-	}	
-	bucket = new_word(str);
-	
+	word *bucketPrev = NULL; 
+	if (bucket == NULL)
+	{
+		hash_table[index] = new_word(str); 
+	}else{
+		while((bucket) != NULL){
+			bucketPrev = bucket;
+			bucket = bucket -> next;  
+		}	
+		bucketPrev->next = new_word(str);
+	}
 }
-
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
  * if the word is found return the adress of the word 
@@ -170,11 +175,69 @@ int read_file_check(const char* fileName){
       return 1;
    }   
 }
+/*read word return a char pointer to a string if word is found in text
+ *it will skip any special charcters and numbers such as \n , !: 1-9
+ *it will return a NULL pointer when it hits EOF
+ */
+char *read_word(FILE *file){
+	char *buffer = NULL; 
+	int array_size = 128; 
+	buffer = (char*)calloc(sizeof(char), array_size);
+  	if(buffer == NULL) 
+  	{
+     	perror("malloc: failed");
+		return NULL;
+
+    }
+	int count = 0; 
+	int c = 0; 
+    //int flag = 1;
+    //if it hits EOF, return the buffer
+	while(((c = getc(file)) != EOF)){
+
+        while(!isalpha(c) && (*buffer == 0))
+        {   
+            if( c!= EOF)
+            {
+                c = getc(file); 
+            }else{
+                break;
+                }
+        }
+        if((c == EOF) || !(isalpha(c))){
+            break;
+        }		
+		if(count < array_size){
+			buffer[count] = tolower(c);
+			++count;
+		}else{
+			array_size = array_size *2;
+			buffer = realloc(buffer, array_size);
+			if(buffer == NULL)
+			{
+				perror("calloc: failed");
+				return NULL;
+			} 
+			buffer[count] = tolower(c); 
+			++count; 
+		}
+	  
+	}
+    if(c == EOF)
+    {
+        
+        buffer = NULL;
+    }
+    return buffer;
+}
+    //caller needs to free buffer
 
 /* return a word from stdin until it hits EOF
  * 		If numbers, special char are read, it will 
  * 		return a character pointer that point to 0 value
  */
+
+/*
 char *read_word(FILE *file){
    char *buffer = NULL; 
    int array_size = 128; 
@@ -212,4 +275,4 @@ char *read_word(FILE *file){
    }
    return buffer;
 
-}
+}*/
