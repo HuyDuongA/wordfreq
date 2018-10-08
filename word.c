@@ -44,17 +44,18 @@ word *new_word(char *str){
  * the chain until node points to NULL, add new word, increase frequency
  * */
 void append_word(char *str, word **hash_table){
+	int index = hash_function(str); 
+	word *bucket = hash_table[index];
+	while(bucket != NULL){
+		bucket = bucket-> next;  
+	}	
+	bucket = new_word(str);
 	
-	if(hash_table[hash_val] == NULL)
-	{
-		hash_table[hash_val] = new_word(str);
-	}
 }
 
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
- * if the word is found return the adress of the word
- * */
+ * if the word is found return the adress of the word 
 word *look_up_word(char *str, word **hash_table){
    	unsigned int index = hash_function(str);
    	word *bucket = hash_table[index];
