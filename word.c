@@ -54,6 +54,10 @@ void append_word(char *str, word **hash_table){
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
  * if the word is found return the adress of the word 
+word 
+*/
+
+
 word *look_up_word(char *str, word **hash_table){
    unsigned int index = hash_function(str);
    word *bucket = hash_table[index];
