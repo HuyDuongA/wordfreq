@@ -140,9 +140,20 @@ int wordcmp(word *a, word *b){
 
 /* call built in sort function and print
  * */
-void sort_print(word *list, word **hash_table){
-   qsort(list, count(hash_table), sizeof(word), 
+void sort_print(int user_num, word *list, word **hash_table){
+   int cnt = count(hash_table);
+   qsort(list, cnt, sizeof(word), 
       (int (*) (const void*, const void *)) wordcmp);
+   printf("The top %d words (out of %d) are:\n", user_num, cnt);
+   for(int i = 0; i < user_num; ++i){
+      printf("\t%d %s\n", list[i].freq, list->wd);
+   }
+}
+
+/* traverse through list and free each word and its next pointer
+ * lastly, free list and hash_table pointers
+ * */
+void clean_up(word *list, word **hash_table){
 }
 
 int read_file_check(const char* fileName){
