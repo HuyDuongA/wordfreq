@@ -12,20 +12,18 @@ unsigned int hash_function(char *s){
 
 
 /*call look_up_word to see if the word is in hash table
-      if not, call new_word and store return address into hashtable.
-            if the bucket[index] is empty at new struct word 
-            else add it to the bottom chain (by calling append_word())
-      else if it's already in the hashtable, increment frequency of the word
+  if not, call new_word and store return address into hashtable.
+  if the bucket[index] is empty at new struct word 
+  else add it to the bottom chain (by calling append_word())
+  else if it's already in the hashtable, increment frequency of the word
  * */
 void evaluate_word (char *str, word **hash_table){
    int hash_val = hash_function(str);
    word *address = look_up_word(str, hash_table);
-   if(!address){
-	  }
-
-   else{
+   if(!address)
+      append_word(str, hash_table);
+   else
       address->freq++;
-   }
 }
 
 /* allocate memory (check error for malloc) for struct word, store str 
@@ -57,45 +55,45 @@ void append_word(char *str, word **hash_table){
  * if the word isn't found, return NULL
  * if the word is found return the adress of the word 
 word *look_up_word(char *str, word **hash_table){
-   	unsigned int index = hash_function(str);
-   	word *bucket = hash_table[index];
-	while(!(strcmp(bucket->wd, str)) && (bucket->next != NULL))
-	{
-		bucket = bucket -> next; 
-	}
-	if((strcmp(bucket->wd, str)))
-	{
-		return bucket;
-	}else
-	{
-		return NULL;
-	}
+   unsigned int index = hash_function(str);
+   word *bucket = hash_table[index];
+   while(!(strcmp(bucket->wd, str)) && (bucket->next != NULL))
+   {
+      bucket = bucket -> next; 
+   }
+   if((strcmp(bucket->wd, str)))
+   {
+      return bucket;
+   }else
+   {
+      return NULL;
+   }
 
 
 
-/*
+   /*
 
-   	if (bucket == NULL)
-   	{
-		return NULL;
-   	}   
-   	else if (!(strcmp(bucket->wd, str)))
-	{
-		return bucket ;
-	}
-    
-   	while ((bucket = (bucket-> next)))
-   	{
-		if (!(strcmp((bucket -> wd), str)))	
-		{
-			return bucket;
-		}
-	}
-	return NULL;
-   	//word *ret = NULL;
-   	//return ret;
-}
-*/
+      if (bucket == NULL)
+      {
+      return NULL;
+      }   
+      else if (!(strcmp(bucket->wd, str)))
+      {
+      return bucket ;
+      }
+
+      while ((bucket = (bucket-> next)))
+      {
+      if (!(strcmp((bucket -> wd), str)))	
+      {
+      return bucket;
+      }
+      }
+      return NULL;
+   //word *ret = NULL;
+   //return ret;
+   }
+   */
 
 /* count how many words stored inside hash_table
  * */
@@ -141,19 +139,19 @@ word *hash_to_list(word **hash_table){
 /* return negative number if a comes before b
  * return positvie if a comes after b
  * return 0 if a and b are equal 
-*/
+ */
 int wordcmp(word *a, word *b){
-    if(a->freq == b->freq)
-    {
-        return strcmp(a->wd, b->wd);
-    }
-    else if( a->freq > b->freq)
-    {
-        return -1;
-    }else
-    {
-        return 1;
-    }
+   if(a->freq == b->freq)
+   {
+      return strcmp(a->wd, b->wd);
+   }
+   else if( a->freq > b->freq)
+   {
+      return -1;
+   }else
+   {
+      return 1;
+   }
 }
 
 /* call built in sort function and print
@@ -161,7 +159,7 @@ int wordcmp(word *a, word *b){
 void sort_print(int user_num, word *list, word **hash_table){
    int cnt = count(hash_table);
    qsort(list, cnt, sizeof(word), 
-      (int (*) (const void*, const void *)) wordcmp);
+         (int (*) (const void*, const void *)) wordcmp);
    printf("The top %d words (out of %d) are:\n", user_num, cnt);
    for(int i = 0; i < user_num; ++i){
       printf("\t%d %s\n", list[i].freq, list->wd);
@@ -192,40 +190,40 @@ int read_file_check(const char* fileName){
  * 		return a character pointer that point to 0 value
  */
 char *read_word(FILE *file){
-	char *buffer = NULL; 
-	int array_size = 128; 
-	buffer = (char*)calloc(sizeof(char), array_size);
-  	if(buffer == NULL) 
-  	{
-     	perror("malloc: failed");
-		return NULL;
+   char *buffer = NULL; 
+   int array_size = 128; 
+   buffer = (char*)calloc(sizeof(char), array_size);
+   if(buffer == NULL) 
+   {
+      perror("malloc: failed");
+      return NULL;
 
-    }
-	int count = 0; 
-	int c = 0; 
-	
-	while(((c = getc(file)) != EOF) && (isalpha(c))){
-		
-		if(count < array_size){
-			buffer[tolower(count)] = c;
-			++count;
-		}else{
-			array_size = array_size *2;
-			buffer = realloc(buffer, array_size);
-			if(buffer == NULL)
-			{
-				perror("calloc: failed");
-				return NULL;
-			} 
-			buffer[tolower(count)] = c; 
-			++count; 
-		}
-	  
-	}
-	if(c == EOF)
-	{
-		buffer = NULL; 
-	}
-	return buffer;
+   }
+   int count = 0; 
+   int c = 0; 
+
+   while(((c = getc(file)) != EOF) && (isalpha(c))){
+
+      if(count < array_size){
+         buffer[tolower(count)] = c;
+         ++count;
+      }else{
+         array_size = array_size *2;
+         buffer = realloc(buffer, array_size);
+         if(buffer == NULL)
+         {
+            perror("calloc: failed");
+            return NULL;
+         } 
+         buffer[tolower(count)] = c; 
+         ++count; 
+      }
+
+   }
+   if(c == EOF)
+   {
+      buffer = NULL; 
+   }
+   return buffer;
 
 }
