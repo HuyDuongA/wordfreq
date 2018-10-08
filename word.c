@@ -18,7 +18,6 @@ unsigned int hash_function(char *s){
   else if it's already in the hashtable, increment frequency of the word
  * */
 void evaluate_word (char *str, word **hash_table){
-   int hash_val = hash_function(str);
    word *address = look_up_word(str, hash_table);
    if(!address)
       append_word(str, hash_table);
