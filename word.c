@@ -21,13 +21,8 @@ void evaluate_word (char *str, word **hash_table){
    int hash_val = hash_function(str);
    word *address = look_up_word(str, hash_table);
    if(!address){
-      if(hash_table[hash_val] == NULL){
-         hash_table[hash_val] = new_word(str);
-      }
-      else{
-         append_word(str, hash_table);
-      }
-   }
+	  }
+
    else{
       address->freq++;
    }
@@ -49,20 +44,41 @@ word *new_word(char *str){
  * the chain until node points to NULL, add new word, increase frequency
  * */
 void append_word(char *str, word **hash_table){
+	
+	if(hash_table[hash_val] == NULL)
+	{
+		hash_table[hash_val] = new_word(str);
+	}
 }
 
 /* call hash_function to get the index of str, traverse through the chain
- * if the word is found, return address of the word
- * else if it hits NULL
+ * if the word isn't found, return NULL
+ * if the word is found return the adress of the word
  * */
 word *look_up_word(char *str, word **hash_table){
    	unsigned int index = hash_function(str);
    	word *bucket = hash_table[index];
+	while(!(strcmp(bucket->wd, str)) && (bucket->next != NULL))
+	{
+		bucket = bucket -> next; 
+	}
+	if((strcmp(bucket->wd, str)))
+	{
+		return bucket;
+	}else
+	{
+		return NULL;
+	}
+
+
+
+/*
+
    	if (bucket == NULL)
    	{
 		return NULL;
    	}   
-   	else if (!(strcmp((bucket -> wd), str)))
+   	else if (!(strcmp(bucket->wd, str)))
 	{
 		return bucket ;
 	}
@@ -78,6 +94,7 @@ word *look_up_word(char *str, word **hash_table){
    	//word *ret = NULL;
    	//return ret;
 }
+*/
 
 /* count how many words stored inside hash_table
  * */
@@ -197,4 +214,3 @@ char *read_word(FILE *file){
 	return buffer;
 
 }
-
