@@ -31,8 +31,18 @@
 #include "word.h"
 
 int main(int argc, const char *argv[]){
-   FILE *fp;
-   int num;
+   word *hash_table[HASHSIZE] = {NULL};
+   while((myC = read_word(stdin))){
+		evaluate_word(myC, hash_table);
+	}
+    int count = count(hash_table);
+    word * result = calloc(count, sizeof(word)); 
+    result = hash_to_list(hash_table); 
+        
+		 
+	
+
+/*
    if(argc == 1){  //check for -n argument
       fp = stdin;
    }
@@ -59,6 +69,8 @@ int main(int argc, const char *argv[]){
       }   
    }
    return 0;
+
+*/
 }
 
 

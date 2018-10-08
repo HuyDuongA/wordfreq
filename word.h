@@ -1,6 +1,6 @@
 #ifndef WORD_H
 #define WORD_H
-#define HASHSIZE 101
+#define HASHSIZE 2 
 
 typedef struct node{
    char *wd;
