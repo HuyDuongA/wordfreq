@@ -38,8 +38,9 @@ word *new_word(char *str){
    return w_new;
 }
 
-/* call hash function to get the index of bucket, and traverse through
- * the chain until node points to NULL, add new word, increase frequency
+/* call hash function to get the index of bucket, and 
+ * traverse throug the chain until node points to NULL
+ * and then adding the new word.
  * */
 void append_word(char *str, word **hash_table){
 	int index = hash_function(str); 
@@ -72,14 +73,14 @@ word *look_up_word(char *str, word **hash_table){
 	}
 	while((bucket->next != NULL) &&(strcmp(bucket->wd, str))  )
     {
-      bucket = bucket -> next; 
+        bucket = bucket -> next; 
     }
-   if(!(strcmp(bucket->wd, str)))
+    if(!(strcmp(bucket->wd, str)))
     {
-      return bucket;
+        return bucket;
     }else
     {
-      return NULL;
+        return NULL;
     }
 
 }
@@ -178,6 +179,7 @@ int read_file_check(const char* fileName){
 /*read word return a char pointer to a string if word is found in text
  *it will skip any special charcters and numbers such as \n , !: 1-9
  *it will return a NULL pointer when it hits EOF
+ *caller needs to free the buffer
  */
 char *read_word(FILE *file){
 	char *buffer = NULL; 
@@ -232,47 +234,3 @@ char *read_word(FILE *file){
 }
     //caller needs to free buffer
 
-/* return a word from stdin until it hits EOF
- * 		If numbers, special char are read, it will 
- * 		return a character pointer that point to 0 value
- */
-
-/*
-char *read_word(FILE *file){
-   char *buffer = NULL; 
-   int array_size = 128; 
-   buffer = (char*)calloc(sizeof(char), array_size);
-   if(buffer == NULL) 
-   {
-      perror("malloc: failed");
-      return NULL;
-
-   }
-   int count = 0; 
-   int c = 0; 
-
-   while(((c = getc(file)) != EOF) && (isalpha(c))){
-
-      if(count < array_size){
-         buffer[tolower(count)] = c;
-         ++count;
-      }else{
-         array_size = array_size *2;
-         buffer = realloc(buffer, array_size);
-         if(buffer == NULL)
-         {
-            perror("calloc: failed");
-            return NULL;
-         } 
-         buffer[tolower(count)] = c; 
-         ++count; 
-      }
-
-   }
-   if(c == EOF)
-   {
-      buffer = NULL; 
-   }
-   return buffer;
-
-}*/
