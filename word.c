@@ -31,14 +31,20 @@ void evaluate_word (char *str, word **hash_table){
 word *new_word(char *str){
    int num_word = 1;
    word* w_new = calloc(num_word, sizeof(word));
-   w_new->wd = str;
-   w_new->freq = 1;
-   w_new->next = NULL;
+   if(w_new == NULL){
+       perror("calloc: failed\n");
+   }
+   else{
+       w_new->wd = str;
+       w_new->freq = 1;
+       w_new->next = NULL;
+   }
    return w_new;
 }
 
 /* call hash function to get the index of bucket, and traverse through
  * the chain until node points to NULL, add new word, increase frequency
+ * Note from Huy: make sure to check w_new == NULL after calling new_word
  * */
 void append_word(char *str, word **hash_table){
 	int index = hash_function(str); 
@@ -58,8 +64,7 @@ void append_word(char *str, word **hash_table){
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
  * if the word is found return the adress of the word 
-word 
-*/
+ * */
 
 
 word *look_up_word(char *str, word **hash_table){
@@ -152,7 +157,7 @@ void sort_print(int user_num, word *list, word **hash_table){
          (int (*) (const void*, const void *)) wordcmp);
    printf("The top %d words (out of %d) are:\n", user_num, cnt);
    for(int i = 0; i < user_num; ++i){
-      printf("\t%d %s\n", list[i].freq, list->wd);
+      printf("\t%d %s\n", list[i].freq, list[i].wd);
    }
 }
 
@@ -160,6 +165,10 @@ void sort_print(int user_num, word *list, word **hash_table){
  * lastly, free list and hash_table pointers
  * */
 void clean_up(word *list, word **hash_table){
+    for(int i = 0; i < count(hash_table); ++i){
+        free((void *)list+i);
+    }
+    free(hash_table);
 }
 
 int read_file_check(const char* fileName){
