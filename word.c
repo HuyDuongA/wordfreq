@@ -59,9 +59,9 @@ word
 
 
 word *look_up_word(char *str, word **hash_table){
-   unsigned int index = hash_function(str);
-   word *bucket = hash_table[index];
-   while(!(strcmp(bucket->wd, str)) && (bucket->next != NULL))
+    unsigned int index = hash_function(str);
+	word *bucket = hash_table[index];
+	while(!(strcmp(bucket->wd, str)) && (bucket->next != NULL))
    {
       bucket = bucket -> next; 
    }
@@ -73,7 +73,7 @@ word *look_up_word(char *str, word **hash_table){
       return NULL;
    }
 
-
+}
 
    /*
 
