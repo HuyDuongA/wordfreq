@@ -1,4 +1,4 @@
-TARGET   = wf
+TARGET   = fw
 CC       = clang
 CCFLAGS  = -std=c99 -g -pedantic -Wall 
 LDFLAGS  = -lm

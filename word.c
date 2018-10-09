@@ -3,11 +3,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+
 unsigned int hash_function(char *s){
-   unsigned int hashval;
-   for(hashval = 0; *s != '\0'; s++)
-      hashval = *s + 31 * hashval;
-   return hashval % HASHSIZE;
+    unsigned int hashval;
+    for(hashval = 0; *s != '\0'; s++)
+        hashval = *s + 31 * hashval;
+    return hashval % HASHSIZE;
 }
 //this function take a file and process its words 
 //to a hash table
@@ -16,9 +17,8 @@ void process_word_to_hashtable(FILE *file, word **hash_table)
     char *myC;
     while((myC= read_word(file))){
         evaluate_word(myC, hash_table); 
-        //free(myC); 
     }
-    
+
 }
 
 /*call look_up_word to see if the word is in hash table
@@ -28,28 +28,28 @@ void process_word_to_hashtable(FILE *file, word **hash_table)
   else if it's already in the hashtable, increment frequency of the word
  * */
 void evaluate_word (char *str, word **hash_table){
-   word *address = look_up_word(str, hash_table);
-   if(!address)
-      append_word(str, hash_table);
-   else
-      address->freq++;
+    word *address = look_up_word(str, hash_table);
+    if(!address)
+        append_word(str, hash_table);
+    else
+        address->freq++;
 }
 
 /* allocate memory (check error for malloc) for struct word, store str 
  * into wd, then return word.
  * */
 word *new_word(char *str){
-   int num_word = 1;
-   word* w_new = calloc(num_word, sizeof(word));
-   if(w_new == NULL){
-       perror("calloc: failed\n");
-   }
-   else{
-       w_new->wd = str;
-       w_new->freq = 1;
-       w_new->next = NULL;
-   }
-   return w_new;
+    int num_word = 1;
+    word* w_new = calloc(num_word, sizeof(word));
+    if(w_new == NULL){
+        perror("calloc: failed\n");
+    }
+    else{
+        w_new->wd = str;
+        w_new->freq = 1;
+        w_new->next = NULL;
+    }
+    return w_new;
 }
 
 /* call hash function to get the index of bucket, and traverse through
@@ -57,20 +57,19 @@ word *new_word(char *str){
  * Note from Huy: make sure to check w_new == NULL after calling new_word
  * */
 void append_word(char *str, word **hash_table){
-	int index = hash_function(str); 
-	word *bucket = hash_table[index];
-	word *bucketPrev = NULL; 
-	if (bucket == NULL)
-	{
-		hash_table[index] = new_word(str); 
-	}else{
-		while((bucket) != NULL){
-			bucketPrev = bucket;
-			bucket = bucket -> next;  
-		}	
-		bucketPrev->next = new_word(str);
-	}
-    //free(str);
+    int index = hash_function(str); 
+    word *bucket = hash_table[index];
+    word *bucketPrev = NULL; 
+    if (bucket == NULL)
+    {
+        hash_table[index] = new_word(str); 
+    }else{
+        while((bucket) != NULL){
+            bucketPrev = bucket;
+            bucket = bucket -> next;  
+        }	
+        bucketPrev->next = new_word(str);
+    }
 }
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
@@ -80,12 +79,12 @@ void append_word(char *str, word **hash_table){
 
 word *look_up_word(char *str, word **hash_table){
     unsigned int index = hash_function(str);
-	word *bucket = hash_table[index];
-	if(bucket == NULL)
-	{
-		return NULL;
-	}
-	while((bucket->next != NULL) &&(strcmp(bucket->wd, str))  )
+    word *bucket = hash_table[index];
+    if(bucket == NULL)
+    {
+        return NULL;
+    }
+    while((bucket->next != NULL) &&(strcmp(bucket->wd, str))  )
     {
         bucket = bucket -> next; 
     }
@@ -99,37 +98,25 @@ word *look_up_word(char *str, word **hash_table){
 
 }
 
-   
+
 
 /* count how many words stored inside hash_table
  * */
 int count_hash(word **hash_table){
-   int word_num = 0;
-   struct node *next_node = NULL;
-   for(int i = 0; i < HASHSIZE; ++i){
-      if(hash_table[i]){
-         next_node = hash_table[i];
-         while(next_node){
-            word_num++;
-            next_node = next_node->next;
-         }
-      }
-   }
-   return word_num;
-}
-
-
-/* count_list returns number of element in single linked list
- * */
-int count_list(word *list){
     int word_num = 0;
-    struct node *tmp = list;
-    while(tmp != NULL){
-        tmp = list->next;
-        word_num++;
+    struct node *next_node = NULL;
+    for(int i = 0; i < HASHSIZE; ++i){
+        if(hash_table[i]){
+            next_node = hash_table[i];
+            while(next_node){
+                word_num++;
+                next_node = next_node->next;
+            }
+        }
     }
     return word_num;
 }
+
 
 /* traverse from left to right of the hash table, at each location, 
  * traverse from top to bottom, increase word count 
@@ -139,20 +126,21 @@ int count_list(word *list){
  * new array list.
  * */
 word *hash_to_list(word **hash_table){
-   word *list = calloc(count_hash(hash_table), sizeof(word));
-   struct node *next_node = NULL;
-   int list_index = 0;
-   for(int i = 0; i < HASHSIZE; ++i){
-      if(hash_table[i]){
-         next_node = hash_table[i]; 
-         while(next_node){
-            list[list_index] = *next_node;
-            next_node = next_node->next;
-            list_index++;
-         }   
-      }
-   }
-   return list;
+    word *list = calloc(count_hash(hash_table), sizeof(word));
+    struct node *next_node = NULL;
+    int list_index = 0;
+    for(int i = 0; i < HASHSIZE; ++i){
+        if(hash_table[i]){
+            next_node = hash_table[i]; 
+            while(next_node){
+                list[list_index] = *next_node;
+                next_node = next_node->next;
+                list[list_index].next = NULL;
+                list_index++;
+            }   
+        }
+    }
+    return list;
 }
 
 
@@ -162,29 +150,37 @@ word *hash_to_list(word **hash_table){
  * return 0 if a and b are equal 
  */
 int wordcmp(word *a, word *b){
-   if(a->freq == b->freq)
-   {
-      return strcmp(a->wd, b->wd);
-   }
-   else if( a->freq > b->freq)
-   {
-      return -1;
-   }else
-   {
-      return 1;
-   }
+    if(a->freq == b->freq)
+    {
+        return strcmp(b->wd, a->wd);
+    }
+    else if( a->freq > b->freq)
+    {
+        return -1;
+    }else
+    {
+        return 1;
+    }
 }
 
 /* call built in sort function and print
  * */
-void sort_print(int user_num, word *list){
-   int cnt = count_list(list);
-   qsort(list, cnt, sizeof(word), 
-         (int (*) (const void*, const void *)) wordcmp);
-   printf("The top %d words (out of %d) are:\n", user_num, cnt);
-   for(int i = 0; i < user_num; ++i){
-      printf("\t%d %s\n", list[i].freq, list[i].wd);
-   }
+void sort_print(int user_num, word *list, word **hash_table){
+    int cnt = count_hash(hash_table);
+    int loopNum = 0; 
+    qsort(list, cnt, sizeof(word), 
+            (int (*) (const void*, const void *)) wordcmp);
+
+    printf("The top %d words (out of %d) are:\n", user_num, cnt);
+
+    if(user_num > cnt){
+        loopNum = cnt;
+    }else{
+        loopNum = user_num; 
+    }
+    for(int i = 0; i < loopNum; ++i){
+        printf("%*d %s\n",WIDTHLENGTH, list[i].freq, list[i].wd);
+    }
 }
 
 /* traverse through list and free each word and its next pointer
@@ -206,16 +202,16 @@ void clean_up_hash(word **hash_table){
 }
 
 int read_file_check(const char* fileName){
-   FILE *fp;
-   fp = fopen(fileName, "r"); 
-   if (fp == NULL){
-      fprintf(stderr, "%s: No such file or directory\n", fileName); 
-      return 0;  
-   }   
-   else{
-      fclose(fp); 
-      return 1;
-   }   
+    FILE *fp;
+    fp = fopen(fileName, "r"); 
+    if (fp == NULL){
+        fprintf(stderr, "%s: No such file or directory\n", fileName); 
+        return 0;  
+    }   
+    else{
+        fclose(fp); 
+        return 1;
+    }   
 }
 /*read word return a char pointer to a string if word is found in text
  *it will skip any special charcters and numbers such as \n , !: 1-9
@@ -223,20 +219,18 @@ int read_file_check(const char* fileName){
  *caller needs to free the buffer
  */
 char *read_word(FILE *file){
-	char *buffer = NULL; 
-	int array_size = 128; 
-	buffer = (char*)calloc(sizeof(char), array_size);
-  	if(buffer == NULL) 
-  	{
-     	perror("malloc: failed");
-		return NULL;
+    char *buffer = NULL; 
+    int array_size = 128; 
+    buffer = (char*)calloc(sizeof(char), array_size);
+    if(buffer == NULL) 
+    {
+        perror("malloc: failed");
+        return NULL;
 
     }
-	int count = 0; 
-	int c = 0; 
-    //int flag = 1;
-    //if it hits EOF, return the buffer
-	while(((c = getc(file)) != EOF)){
+    int count = 0; 
+    int c = 0; 
+    while(((c = getc(file)) != EOF)){
 
         while(!isalpha(c) && (*buffer == 0))
         {   
@@ -245,30 +239,30 @@ char *read_word(FILE *file){
                 c = getc(file); 
             }else{
                 break;
-                }
+            }
         }
         if((c == EOF) || !(isalpha(c))){
             break;
         }		
-		if(count < array_size){
-			buffer[count] = tolower(c);
-			++count;
-		}else{
-			array_size = array_size *2;
-			buffer = realloc(buffer, array_size);
-			if(buffer == NULL)
-			{
-				perror("calloc: failed");
-				return NULL;
-			} 
-			buffer[count] = tolower(c); 
-			++count; 
-		}
-	  
-	}
+        if(count < array_size){
+            buffer[count] = tolower(c);
+            ++count;
+        }else{
+            array_size = array_size *2;
+            buffer = realloc(buffer, array_size);
+            if(buffer == NULL)
+            {
+                perror("calloc: failed");
+                return NULL;
+            } 
+            buffer[count] = tolower(c); 
+            ++count; 
+        }
+
+    }
     if(c == EOF)
     {
-        
+
         buffer = NULL;
     }
     return buffer;
