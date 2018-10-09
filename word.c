@@ -9,7 +9,17 @@ unsigned int hash_function(char *s){
       hashval = *s + 31 * hashval;
    return hashval % HASHSIZE;
 }
-
+//this function take a file and process its words 
+//to a hash table
+void process_word_to_hashtable(FILE *file, word **hash_table)
+{
+    char *myC;
+    while((myC= read_word(stdin))){
+        evaluate_word(myC, hash_table); 
+        //free(myC); 
+    }
+    
+}
 
 /*call look_up_word to see if the word is in hash table
   if not, call new_word and store return address into hashtable.
@@ -60,6 +70,7 @@ void append_word(char *str, word **hash_table){
 		}	
 		bucketPrev->next = new_word(str);
 	}
+    free(str);
 }
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
@@ -164,11 +175,11 @@ void sort_print(int user_num, word *list, word **hash_table){
 /* traverse through list and free each word and its next pointer
  * lastly, free list and hash_table pointers
  * */
-void clean_up(word *list, word **hash_table){/*
+void clean_up(word *list, word **hash_table){
     for(int i = 0; i < count(hash_table); ++i){
         free((void *)list+i);
     }
-    free(hash_table);*/
+    free(hash_table);
 }
 
 int read_file_check(const char* fileName){
@@ -239,5 +250,4 @@ char *read_word(FILE *file){
     }
     return buffer;
 }
-    //caller needs to free buffer
 

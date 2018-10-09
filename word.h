@@ -20,4 +20,5 @@ void sort_print(int ,word *, word **);    //Huy
 void clean_up(word *, word **);           //Huy
 char *read_word(FILE *);                  //done
 int read_file_check(const char*);         //done
+void process_word_to_hashtable(FILE *, word **);
 #endif
