@@ -14,7 +14,7 @@ unsigned int hash_function(char *s){
 void process_word_to_hashtable(FILE *file, word **hash_table)
 {
     char *myC;
-    while((myC= read_word(stdin))){
+    while((myC= read_word(file))){
         evaluate_word(myC, hash_table); 
         //free(myC); 
     }
@@ -70,7 +70,7 @@ void append_word(char *str, word **hash_table){
 		}	
 		bucketPrev->next = new_word(str);
 	}
-    free(str);
+    //free(str);
 }
 /* call hash_function to get the index of str, traverse through the chain
  * if the word isn't found, return NULL
