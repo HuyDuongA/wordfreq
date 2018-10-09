@@ -164,11 +164,11 @@ void sort_print(int user_num, word *list, word **hash_table){
 /* traverse through list and free each word and its next pointer
  * lastly, free list and hash_table pointers
  * */
-void clean_up(word *list, word **hash_table){
+void clean_up(word *list, word **hash_table){/*
     for(int i = 0; i < count(hash_table); ++i){
         free((void *)list+i);
     }
-    free(hash_table);
+    free(hash_table);*/
 }
 
 int read_file_check(const char* fileName){
