@@ -31,21 +31,57 @@
 #include "word.h"
 
 int main(int argc, const char *argv[]){
-   word *hash_table[HASHSIZE] = {NULL};
-   while((myC = read_word(stdin))){
-		evaluate_word(myC, hash_table);
-	}
-    int count = count(hash_table);
-    word * result = calloc(count, sizeof(word)); 
-    result = hash_to_list(hash_table); 
-        
-		 
-	
+    word *hash_table[HASHSIZE] = {NULL};
+    int numberOfListedWord = 0;
+    FILE *fp = NULL;  
+    if(argc == 1){  //check for -n argument
+        fp = stdin;  
+        process_word_to_hashtable(fp, hash_table);
 
+   }
+   // when the argument "-n" is passed
+   else if(!strcmp(argv[1],"-n")){
+      if(atoi(argv[2])){
+         numberOfListedWord = atoi(argv[2]);
+         for(int i = 0; i < argc-3; i++){
+            if(read_file_check(argv[i+3])){
+                process_word_to_hashtable(fp, hash_table);
+            }
+         }
+      }
+      else{ 
+         perror("usage: fw [-n num] [ file1 [file 2 ...]]\n");
+         return 1;
+      }
+   }
+   else {
+      numberOfListedWord = 10; 
+      for(int i = 0; i < argc-1; i++){
+         if(read_file_check(argv[i+1])){
+            //evaluate_word(fp);
+         } 
+      }   
+   }
+
+/*
+
+   
+    process_word_to_hashtable(stdin, hash_table);
+    int arraySize;
+    arraySize = count(hash_table);
+    word * result = calloc(arraySize, sizeof(word)); 
+    result = hash_to_list(hash_table); 
+
+*/
+    
+		 
+}
 /*
    if(argc == 1){  //check for -n argument
       fp = stdin;
+
    }
+
    else if(!strcmp(argv[1],"-n")){
       if(atoi(argv[2])){
          num = atoi(argv[2]);
@@ -70,7 +106,6 @@ int main(int argc, const char *argv[]){
    }
    return 0;
 
-*/
-}
 
+*/
 
