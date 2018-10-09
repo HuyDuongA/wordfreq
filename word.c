@@ -103,7 +103,7 @@ word *look_up_word(char *str, word **hash_table){
 
 /* count how many words stored inside hash_table
  * */
-int count(word **hash_table){
+int count_hash(word **hash_table){
    int word_num = 0;
    struct node *next_node = NULL;
    for(int i = 0; i < HASHSIZE; ++i){
@@ -118,6 +118,19 @@ int count(word **hash_table){
    return word_num;
 }
 
+
+/* count_list returns number of element in single linked list
+ * */
+int count_list(word *list){
+    int word_num = 0;
+    struct node *tmp = list;
+    while(tmp != NULL){
+        tmp = list->next;
+        word_num++;
+    }
+    return word_num;
+}
+
 /* traverse from left to right of the hash table, at each location, 
  * traverse from top to bottom, increase word count 
  * create array with the size of word count
@@ -126,7 +139,7 @@ int count(word **hash_table){
  * new array list.
  * */
 word *hash_to_list(word **hash_table){
-   word *list = calloc(count(hash_table), sizeof(word));
+   word *list = calloc(count_hash(hash_table), sizeof(word));
    struct node *next_node = NULL;
    int list_index = 0;
    for(int i = 0; i < HASHSIZE; ++i){
@@ -141,6 +154,8 @@ word *hash_to_list(word **hash_table){
    }
    return list;
 }
+
+
 
 /* return negative number if a comes before b
  * return positvie if a comes after b
@@ -162,8 +177,8 @@ int wordcmp(word *a, word *b){
 
 /* call built in sort function and print
  * */
-void sort_print(int user_num, word *list, word **hash_table){
-   int cnt = count(hash_table);
+void sort_print(int user_num, word *list){
+   int cnt = count_list(list);
    qsort(list, cnt, sizeof(word), 
          (int (*) (const void*, const void *)) wordcmp);
    printf("The top %d words (out of %d) are:\n", user_num, cnt);
@@ -173,17 +188,23 @@ void sort_print(int user_num, word *list, word **hash_table){
 }
 
 /* traverse through list and free each word and its next pointer
- * lastly, free list and hash_table pointers
  * */
-
-/*
-void clean_up(word *list, word **hash_table){
-    for(int i = 0; i < count(hash_table); ++i){
-        free((void *)list+i);
+void clean_up_list(word *list){
+    word *temp;
+    while(list != NULL){
+        temp = list;
+        list = list->next;
+        free(temp);
     }
-    free(hash_table);
 }
-*/
+
+/* traverse horizontally and vertically to free each element in 
+ * hash_table
+ * Status: Incomplete
+ * */
+void clean_up_hash(word **hash_table){
+}
+
 int read_file_check(const char* fileName){
    FILE *fp;
    fp = fopen(fileName, "r"); 
